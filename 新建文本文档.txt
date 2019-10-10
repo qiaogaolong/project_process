@@ -1,0 +1,37 @@
+1.安装node.js
+2.使用npm全局安装webpack（npm install webpack -g）
+3.全局安装vue-cli（npm install --global vue-cli）
+4.使用Vue-cli构建工程目录（使用cmd进入命令行工具输入：vue init webpack 项目名称）
+5.npm install 安装所有依赖 （npm run dev运行）
+6.在build目录下的utils.js里面配置less sass（根据项目需要）只需要将less 的变量注入全局， sass则需要注入 变量和mixin混合函数（我用的是less）
+7.在build目录下的webpack.dev.conf.js里找到rules规则使esline在dev环境下启用build下不启用（启用的话可能会导致一些功能出现问题）
+8.在build目录下的webpack.prod.conf.js里输出一个json文件来配置跨域的接口,用于线上和本地的URL的使用（自定义的URL）
+9.在config目录下配置反向代理（proxyTable）
+10.在config目录下的prod.env.js里面配置线上请求前缀
+11.在config目录下的dev.env.js里面配置本地请求前缀
+12.src目录下的api里面创建两个js文件
+	（1）一个存放接口（用于集中管理接口）用axios封装get和post方法 （根据项目需求配置自定义拉取数据方法），然后设置请求头或者项目要用到的用户信息
+	（2）另外一个获取缓存里面的路径，然后导出（用是否是生产环境判断）
+13.assets目录里面
+	（1）创建一个css目录可以设置一些全局的变量和样式（用less来设置一些样式方法比如完全居中等等，用的时候方便），引入阿里矢量图标库（iconfont）
+	（2）创建一个data目录里面可以写两个js文件（根据项目需求）第一个用于全局配置一些面包屑（全局管理），另外一个导出一些常用的全局变量（比如状态码成		             功，失败，是否是生产环境等等）
+	（3）创建一个js目录可以设置一些本项目所使用工具函数（比如rsa加密也有用md5，我的项目是先md5在rsa，下载并且保存文件的方法）都可以在这里面集中管理
+14.components目录可以写一些公共的组件
+15.一般是创建一个page目录存放单页面
+16.router目录下创建两个js文件
+	（1）index.js来存放项目路由配置
+	（2）引入index.js，vue入口，store，axios等
+	（2_1）在这里获取自己设置的URL信息（就是第八条输出的json），然后存入缓存
+	（2_2）判断是否是线上环境，如果是就获取自定义的URL
+	 (2_3)声明一个VueRouter的实例router来一个放入引入的index.js，mode设置为‘hash’
+	 (2_4)用router.beforeEach来做路由拦截（比如未登录情况下，要想进入个人中心，判断路由用to.meta.requireAuth设置为true来拦截访问，等等用途）
+	 (2_5)还可以用router.afterEach来实现切换页面从顶部开始
+17.如果可以的话可以写一个文件夹来吧element这些UI按需引入（可以使打包速度变快，优化）
+18.store文件（这里就是vuex，不会就看看官网，我也不知道咋解释）但是需要下载vuex-persistedstate插件来使vuex数据持久储存
+19.在src目录下创建一个filter.js文件写一些方法（比如价格后面加两个零，超出99的数字显示99+，进度条，等等）
+20.在src目录下创建一个http.js文件来吧axios二次封装
+	（1）axios.defaults.timeout = 15000 // 请求超时
+	  axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'（根据项目需求看Content-Type需要什么编码类型）
+	  axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+          axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用凭证
+	（2）axios.interceptors.response.use设置http response登录拦截
